@@ -59,3 +59,26 @@
   const b = document.querySelector('.burger');
   b && b.addEventListener('click', () => document.querySelector('.menu').classList.toggle('open'));
 })();
+/* ===== MEMBERS: click to reveal comment (append) ===== */
+(() => {
+  const cards = document.querySelectorAll('.mcard');
+  if (!cards.length) return;
+
+  const close = c => { c.classList.remove('open'); c.setAttribute('aria-expanded', 'false'); };
+
+  cards.forEach(c => {
+    c.addEventListener('click', () => {
+      const wasOpen = c.classList.contains('open');
+      document.querySelectorAll('.mcard.open').forEach(close); // 常に1枚だけ開く
+      if (!wasOpen) { c.classList.add('open'); c.setAttribute('aria-expanded', 'true'); }
+    });
+    c.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); c.click(); }
+    });
+  });
+
+  // 余白クリックで全部閉じる
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.mcard')) document.querySelectorAll('.mcard.open').forEach(close);
+  });
+})();
